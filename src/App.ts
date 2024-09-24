@@ -9,4 +9,3 @@ export default class App {
   public express: express.Application;
   public httpServer: http.Server;
 }
-
