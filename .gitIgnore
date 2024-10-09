@@ -1,5 +1,14 @@
+.idea/
+.vscode/
 node_modules/
+tmp/
+temp/
+dist/
+logs/
+Note.md
+
+# Leave out the env files.
+
 .env.prod
 .env.staging
-*.log-u 
-dist/
+**/.DS_Store
