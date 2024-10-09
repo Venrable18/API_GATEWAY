@@ -5,7 +5,7 @@ tmp/
 temp/
 dist/
 logs/
-Note.md
+partCode.md
 
 # Leave out the env files.
 
