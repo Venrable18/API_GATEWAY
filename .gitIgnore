@@ -11,4 +11,5 @@ partCode.md
 
 .env.prod
 .env.staging
+.env
 **/.DS_Store

@@ -44,24 +44,68 @@
 // export default logger;
 
 
-import { existsSync,mkdirSync } from "fs";
-import { Logger } from "winston";
-import winston  from "winston";
+// import { existsSync,mkdirSync } from "fs";
+// import { Logger } from "winston";
+// import winston  from "winston";
 
-const logDir = './logs';
+// const logDir = '../logs';
+
+// if(!existsSync(logDir)) {
+//   mkdirSync(logDir);
+// }
+
+// const logger: Logger = winston.createLogger({
+//   format: winston.format.json(),
+//   transports: [
+//     new winston.transports.Console(),
+//     new winston.transports.File({
+//       filename: `${logDir}/combined.log`
+//     })
+//   ],
+// });
+
+// try {
+//   logger.info(`This is the test measure of the Code`);
+//   logger.error(`This is the error message of the test`)
+// } catch (error) {
+//  console.error(`${error}`) 
+// }
+
+import fs from 'fs';
+import {existsSync, mkdirSync} from 'fs';
+import winston, { Logger } from 'winston';
+import * as path from 'path';
+
+
+const logDir = path.resolve(__dirname, 'log'); // Use absolute path to avoid path issues
 
 if(!existsSync(logDir)) {
   mkdirSync(logDir);
-}
+};
 
 const logger: Logger = winston.createLogger({
   format: winston.format.json(),
   transports: [
     new winston.transports.Console(),
     new winston.transports.File({
-      filename: `${logDir}/combined.log`
-    })
+      filename: `${logDir}/command.log`
+    }),
   ],
 });
 
-export default logger
+// Ensure the log directory exists
+try {
+    if (!fs.existsSync(logDir)) {
+        fs.mkdirSync(logDir, { recursive: true });
+        console.log(`Log directory created at ${logDir}`);
+    } else {
+        console.log(`Log directory already exists at ${logDir}`);
+    }
+} catch (err) {
+    console.error(`Failed to create log directory: ${err.message}`);
+    throw err; // Rethrow the error if directory creation fails
+};
+
+export default logger;
+
+
