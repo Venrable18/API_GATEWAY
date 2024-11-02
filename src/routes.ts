@@ -1,7 +1,7 @@
 import logger from './lib/logger';
 import { Router } from 'express';
 import { RouteDefinition } from './types/RoutesDefinition';
-import { myServices } from './business/Homepage';
+import { myServices } from './Business/Homepage';
 
 function registerControllerRoutes(routes: RouteDefinition[]): Router {
 	const controllerRouter = Router();
