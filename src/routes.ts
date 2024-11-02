@@ -1,10 +1,11 @@
-import logger from './lib/logger';
+import logger   from './lib/logger';
 import { Router } from 'express';
 import { RouteDefinition } from './types/RoutesDefinition';
-import { myServices } from './Business/Homepage';
+import { myServices } from './business/Homepage';
 
 function registerControllerRoutes(routes: RouteDefinition[]): Router {
 	const controllerRouter = Router();
+
 
 	routes.forEach((route) => {
 		switch (route.method) {

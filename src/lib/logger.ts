@@ -1,8 +1,10 @@
 import * as fs from 'fs';
+import { StatusCodes } from 'http-status-codes';
 import * as path from 'path';
 import winston, { Logger } from 'winston';
+import ApiError from '../abstraction/ApiError';
 
-const logDir = path.resolve(__dirname, '../log'); // Use absolute path to avoid path issues
+const logDir = path.resolve(__dirname, './log'); // Use absolute path to avoid path issues
 
 // Ensure the log directory exists
 try {
@@ -14,7 +16,7 @@ try {
 	}
 } catch (err) {
 	console.error(
-		`Failed to create log directory: ${err instanceof Error ? err.message : 'Unknown error'}`,
+		`Failed to create log directory: ${err instanceof Error ? err.message : new ApiError("Unknown Error", StatusCodes.NOT_IMPLEMENTED)}`,
 	);
 	throw err; // Rethrow the error if directory creation fails
 }

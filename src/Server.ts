@@ -21,9 +21,7 @@ function serverListening(): void {
 	if (addressInfo) {
 		const { address, port } = addressInfo;
 		logger.info(`listening on ${address}:${port}`);
-	} else {
-		logger.warn('Server not found');
-	}
+	} 
 }
 
 (async () => {

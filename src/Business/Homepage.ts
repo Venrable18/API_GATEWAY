@@ -1,11 +1,11 @@
-import logger from '../lib/logger';
 import { NextFunction, Request, Response } from 'express';
 import { StatusCodes } from 'http-status-codes';
 import ApiError from '../abstraction/ApiError';
 import { RouteDefinition } from '../types/RoutesDefinition';
+import logger from '../lib/logger';
 
 export class myServices {
-	public basePath = 'AlSh';
+	public basePath = 'Homepage';
 
 	public bisRoute(): RouteDefinition[] {
 		return [
