@@ -4,7 +4,7 @@ node_modules/
 tmp/
 temp/
 dist/
-logs/
+/log/
 partCode.md
 
 # Leave out the env files.
