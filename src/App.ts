@@ -58,8 +58,9 @@ export default class App {
 
     const corsOptions = {
       origin: [
-        "http://localhost:20786/services/homepage",
-        "http://127.0.0.1:20786",
+        //"http://localhost:9000/services/homepage",
+        "http://localhost://example.com",
+        //0.0.1:9000",
       ],
     };
     this.express.use(cors(corsOptions));
