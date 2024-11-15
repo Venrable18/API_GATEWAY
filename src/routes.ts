@@ -65,7 +65,7 @@ export function bizRoutes() {
 
     bCtrl.forEach((Ctrl) => {
       router.use(
-        `//${Ctrl.basePath}`,
+        `/${Ctrl.basePath}`,
         registerControllerRoutes(Ctrl.bisRoute()),
       );
     });

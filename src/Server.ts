@@ -14,29 +14,18 @@ function serverError(err: NodeJS.ErrnoException) {
   throw new ApiError("Syscall error", StatusCodes.CONFLICT);
 }
 
-function serverListening(): void {
-  const server = http.createServer();
-  const addressInfo = (server.address() as AddressInfo) || null;
-
-  if (addressInfo) {
-    const { address, port } = addressInfo;
-    logger.info(`listening on ${address}:${port}`);
-  } else {
-    logger.warn("server not listening");
-  }
-}
-
 (async () => {
   try {
     await app.init();
-    const port = process.env.PORT;
+    const port = process.env.NODE_ENV || 4000;
     app.express.set("port", port);
 
-    const server = app.httpServer;
+    const server = http.createServer();
     server.on("error", serverError);
-    server.on("listening", serverListening);
     server.listen(port, () => {
-      logger.info(`Server listening on ${port}`);
+      const addressInfo = server.address() as AddressInfo;
+      const { address, port } = addressInfo;
+      logger.info(`Server listening on ${address}:${port}`);
     });
   } catch (err: unknown) {
     if (err instanceof Error) {
