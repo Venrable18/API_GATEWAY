@@ -1,7 +1,6 @@
 import logger from "./lib/logger";
 import { Router } from "express";
 import { RouteDefinition } from "./types/RoutesDefinition";
-import { myServicesController } from "./business/Homepage";
 import SystemStatusController from "./components/system-status/SystemStatusController";
 
 function registerControllerRoutes(routes: RouteDefinition[]): Router {
@@ -41,12 +40,12 @@ export function sysRoute() {
 
     // instantiated systemStatus route
 
-    const SysCntrls: SystemStatusController[] = [new SystemStatusController()];
+    const SystemControllers: SystemStatusController[] = [new SystemStatusController()];
 
-    SysCntrls.forEach((SysCtrl) =>
+    SystemControllers.forEach((SystemController) =>
       router.use(
-        `/v1/${SysCtrl.basePath}`,
-        registerControllerRoutes(SysCtrl.routes()),
+        `/v1/${SystemController.basePath}`,
+        registerControllerRoutes(SystemController.routes()),
       ),
     );
     return router;
@@ -56,22 +55,22 @@ export function sysRoute() {
   }
 }
 
-export function bizRoutes() {
-  try {
-    const router = Router();
+// export function bizRoutes() {
+//   try {
+//     const router = Router();
 
-    // Here is where my business route is instantiated
-    const bCtrl: myServicesController[] = [new myServicesController()];
+//     // Here is where my business route is instantiated
+//     const bCtrl: myServicesController[] = [new myServicesController()];
 
-    bCtrl.forEach((Ctrl) => {
-      router.use(
-        `/${Ctrl.basePath}`,
-        registerControllerRoutes(Ctrl.bisRoute()),
-      );
-    });
-    return router;
-  } catch (error) {
-    logger.error("Unable to register the route", error);
-    throw error;
-  }
-}
+//     bCtrl.forEach((Ctrl) => {
+//       router.use(
+//         `/${Ctrl.basePath}`,
+//         registerControllerRoutes(Ctrl.bisRoute()),
+//       );
+//     });
+//     return router;
+//   } catch (error) {
+//     logger.error("Unable to register the route", error);
+//     throw error;
+//   }
+// }

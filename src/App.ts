@@ -1,12 +1,13 @@
 import cors from "cors";
-import express from "express";
+import express, { NextFunction} from "express";
 import http from "http";
 //import * as helmet from 'helmet';
 // eslint-disable-next-line @typescript-eslint/no-require-imports
 const helmet = require("helmet");
 import dotenv from "dotenv";
+import homePage from "./homepage";
 dotenv.config();
-import { bizRoutes, sysRoute } from "./routes";
+import { sysRoute } from "./routes";
 import { addErrorHandler } from "./middleware/error-handler";
 
 export default class App {
@@ -45,7 +46,7 @@ export default class App {
   private routes(): void {
     this.express.get("/", this.basePathRoute);
     this.express.get("/web", this.parseRequestHeader, this.basePathRoute);
-    this.express.use("/", bizRoutes());
+    this.express.get("/homepage", homePage);
     this.express.use("/", sysRoute());
   }
 
@@ -58,9 +59,7 @@ export default class App {
 
     const corsOptions = {
       origin: [
-        //"http://localhost:9000/services/homepage",
-        "http://localhost://example.com",
-        //0.0.1:9000",
+        "http://localhost:4000/homepage",
       ],
     };
     this.express.use(cors(corsOptions));
@@ -73,10 +72,11 @@ export default class App {
     response.json({ message: "base path" });
   }
 
+
   private parseRequestHeader(
     req: express.Request,
     res: express.Response,
-    next: Function
+    next: NextFunction
   ): void {
     //const accessToken = req.headers['access_token'] as string;
     // if (accessToken) {
@@ -108,5 +108,7 @@ export default class App {
   // }
 }
 
+
+//http://localhost:4000/home
 //https://localhost:7890/services/homepage
 //https://localhost:7890/v1/system

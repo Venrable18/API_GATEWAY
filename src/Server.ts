@@ -17,7 +17,7 @@ function serverError(err: NodeJS.ErrnoException) {
 (async () => {
   try {
     await app.init();
-    const port = process.env.NODE_ENV || 4000;
+    const port = 4000;
     app.express.set("port", port);
 
     const server = http.createServer();
