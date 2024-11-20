@@ -105,6 +105,5 @@ export default class App {
   // }
 }
 
-//http://localhost:8000/home
-//https://localhost:7890/services/homepage
-//https://localhost:8000/v1/system/getServerTime
+//http://localhost:8000/homepage
+//http://localhost:8000/v1/system/getServerTime

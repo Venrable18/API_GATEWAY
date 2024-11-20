@@ -24,13 +24,9 @@ function serverError(err: NodeJS.ErrnoException) {
     const server = http.createServer(app.express);
     server.on("error", serverError);
     server.listen(port, () => {
-      const addressInfo = server.address() as AddressInfo | string;
-      if (typeof addressInfo === "string") {
-        logger.info(`Server is listening on ${addressInfo}`);
-      } else {
+      const addressInfo = server.address() as AddressInfo;
         const { address, port } = addressInfo;
         logger.info(`Server listening on ${address}:${port}`);
-      }
     });
   } catch (err: unknown) {
     if (err instanceof Error) {
@@ -43,8 +39,12 @@ function serverError(err: NodeJS.ErrnoException) {
   }
 
   process.on("unhandledRejection", (reason: Error) => {
+    const server = http.createServer(app.express);
     logger.error("Unhandled Promise Rejection: reason:", reason.message);
     logger.error(reason.stack);
     // application specific logging, throwing an error, or other logic here
+    server.close(() => {
+      process.exit(1);
+    })
   });
 })();
