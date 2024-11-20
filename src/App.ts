@@ -1,5 +1,5 @@
 import cors from "cors";
-import express, { NextFunction} from "express";
+import express, { NextFunction } from "express";
 import http from "http";
 //import * as helmet from 'helmet';
 // eslint-disable-next-line @typescript-eslint/no-require-imports
@@ -51,16 +51,14 @@ export default class App {
   }
 
   private middleware(): void {
-    this.express.use(helmet({ contentSecurityPolicy: false }));
+    this.express.use(helmet({ contentSecurityPolicy: true }));
     this.express.use(express.json({ limit: "100mb" }));
     this.express.use(express.urlencoded({ limit: "100mb", extended: true }));
 
     // add multiple cors options as per your use
 
     const corsOptions = {
-      origin: [
-        "http://localhost:4000/homepage",
-      ],
+      origin: ["http://localhost:3000", "http://localhost:8000"],
     };
     this.express.use(cors(corsOptions));
   }
@@ -72,11 +70,10 @@ export default class App {
     response.json({ message: "base path" });
   }
 
-
   private parseRequestHeader(
     req: express.Request,
     res: express.Response,
-    next: NextFunction
+    next: NextFunction,
   ): void {
     //const accessToken = req.headers['access_token'] as string;
     // if (accessToken) {
@@ -92,7 +89,7 @@ export default class App {
     // } else {
     //     console.log('No access token found in headers.');
     // }
-     next();
+    next();
   }
 
   /**
@@ -108,7 +105,6 @@ export default class App {
   // }
 }
 
-
-//http://localhost:4000/home
+//http://localhost:8000/home
 //https://localhost:7890/services/homepage
-//https://localhost:7890/v1/system
+//https://localhost:8000/v1/system/getServerTime

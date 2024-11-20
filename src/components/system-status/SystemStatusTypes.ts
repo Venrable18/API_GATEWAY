@@ -66,7 +66,6 @@ export interface INodeJsProcessVersions {
 
 type INodeJsProcessEnv = Record<string, string | undefined>;
 
-
 export interface IProcessInfoResponse {
   procCpu: INodeJsCpuUsage;
   memUsage: INodeJsMemoryUsage;

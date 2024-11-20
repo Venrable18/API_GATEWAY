@@ -1,5 +1,5 @@
 import * as crypto from "crypto";
-import dotenv from 'dotenv';
+import dotenv from "dotenv";
 
 // Load environment variables from the .env file
 dotenv.config();

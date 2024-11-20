@@ -9,6 +9,7 @@ const app: App = new App();
 
 function serverError(err: NodeJS.ErrnoException) {
   if (err.syscall !== "Listening") {
+    logger.error("unexpected error during server startup", err);
     throw err;
   }
   throw new ApiError("Syscall error", StatusCodes.CONFLICT);
@@ -17,15 +18,19 @@ function serverError(err: NodeJS.ErrnoException) {
 (async () => {
   try {
     await app.init();
-    const port = 4000;
+    const port = 8000;
     app.express.set("port", port);
 
-    const server = http.createServer();
+    const server = http.createServer(app.express);
     server.on("error", serverError);
     server.listen(port, () => {
-      const addressInfo = server.address() as AddressInfo;
-      const { address, port } = addressInfo;
-      logger.info(`Server listening on ${address}:${port}`);
+      const addressInfo = server.address() as AddressInfo | string;
+      if (typeof addressInfo === "string") {
+        logger.info(`Server is listening on ${addressInfo}`);
+      } else {
+        const { address, port } = addressInfo;
+        logger.info(`Server listening on ${address}:${port}`);
+      }
     });
   } catch (err: unknown) {
     if (err instanceof Error) {

@@ -40,7 +40,9 @@ export function sysRoute() {
 
     // instantiated systemStatus route
 
-    const SystemControllers: SystemStatusController[] = [new SystemStatusController()];
+    const SystemControllers: SystemStatusController[] = [
+      new SystemStatusController(),
+    ];
 
     SystemControllers.forEach((SystemController) =>
       router.use(

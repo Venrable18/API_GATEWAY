@@ -59,7 +59,7 @@ export default class SystemStatusController extends BaseController {
   public getSystemInfo(req: Request, res: Response, next: NextFunction): void {
     try {
       const networkInfo = os.networkInterfaces();
-      const network: { [index: string]: INodeJsNetworkInterfaceInfo[] } = {};
+      const network: Record<string, INodeJsNetworkInterfaceInfo[]> = {};
 
       Object.keys(networkInfo).forEach((interfaceName) => {
         const interfaces = networkInfo[interfaceName];
