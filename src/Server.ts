@@ -17,7 +17,6 @@ function serverError(err: NodeJS.ErrnoException) {
 
 const server = http.createServer(app.express);
 
-
 (async () => {
   try {
     await app.init();
@@ -26,10 +25,10 @@ const server = http.createServer(app.express);
 
     server.on("error", serverError);
     server.listen(port, () => {
-      const addressInfo = server.address() as AddressInfo;
-        const { address, port } = addressInfo;
-        logger.info(`Server listening on ${address}:${port}`);
-
+      const addressInfo: AddressInfo = server.address() as AddressInfo;
+      logger.info(
+        `Server listening on http://${addressInfo.address}:${addressInfo.port}`,
+      );
     });
   } catch (err: unknown) {
     if (err instanceof Error) {
@@ -47,6 +46,6 @@ const server = http.createServer(app.express);
     // application specific logging, throwing an error, or other logic here
     server.close(() => {
       process.exit(1);
-    })
+    });
   });
 })();
