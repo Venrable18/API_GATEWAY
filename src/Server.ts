@@ -15,18 +15,21 @@ function serverError(err: NodeJS.ErrnoException) {
   throw new ApiError("Syscall error", StatusCodes.CONFLICT);
 }
 
+const server = http.createServer(app.express);
+
+
 (async () => {
   try {
     await app.init();
     const port = 8000;
     app.express.set("port", port);
 
-    const server = http.createServer(app.express);
     server.on("error", serverError);
     server.listen(port, () => {
       const addressInfo = server.address() as AddressInfo;
         const { address, port } = addressInfo;
         logger.info(`Server listening on ${address}:${port}`);
+
     });
   } catch (err: unknown) {
     if (err instanceof Error) {
@@ -39,7 +42,6 @@ function serverError(err: NodeJS.ErrnoException) {
   }
 
   process.on("unhandledRejection", (reason: Error) => {
-    const server = http.createServer(app.express);
     logger.error("Unhandled Promise Rejection: reason:", reason.message);
     logger.error(reason.stack);
     // application specific logging, throwing an error, or other logic here
