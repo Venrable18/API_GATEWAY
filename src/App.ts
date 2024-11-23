@@ -3,11 +3,14 @@ import express, { NextFunction } from "express";
 import http from "http";
 //import * as helmet from 'helmet';
 // eslint-disable-next-line @typescript-eslint/no-require-imports
+import swaggerSpec from "./utils/swagger";
+import swaggerUi from "swagger-ui-express";
 const helmet = require("helmet");
+import logger from "./lib/logger";
 import dotenv from "dotenv";
 import homePage from "./homepage";
+import { sysCheckingRoute } from "./routes";
 dotenv.config();
-import { sysRoute } from "./routes";
 import { addErrorHandler } from "./middleware/error-handler";
 
 export default class App {
@@ -35,7 +38,7 @@ export default class App {
 
     // In a development/test environment, Swagger will be enabled.
     if (NODE_ENV && NODE_ENV !== "prod") {
-      //this.setupSwaggerDocs();
+      this.setupSwaggerDocs();
     }
   }
 
@@ -47,7 +50,7 @@ export default class App {
     this.express.get("/", this.basePathRoute);
     this.express.get("/web", this.parseRequestHeader, this.basePathRoute);
     this.express.get("/homepage", homePage);
-    this.express.use("/", sysRoute());
+    this.express.use("/", sysCheckingRoute());
   }
 
   private middleware(): void {
@@ -96,14 +99,23 @@ export default class App {
    * swagger setting class function
    */
 
-  // private setupSwaggerDocs(): void {
-  // 	this.express.use(
-  // 		'/docs',
-  // 		swaggerUi.serve,
-  // 		swaggerUi.setup(swaggerDocument),
-  // 	);
-  // }
+  private setupSwaggerDocs(): void {
+    this.express.use("/docs", swaggerUi.serve, swaggerUi.setup(swaggerSpec));
+
+    // Generating raw swagger Json on /swagger;
+
+    this.express.get("/swagger.json", (req, res) => {
+      res.setHeader("Content-Type", "application/json");
+      res.send(swaggerSpec); // send the generated swagger JSON;
+    });
+  }
 }
 
 //http://localhost:8000/homepage
-//http://localhost:8000/v1/system/getServerTime
+//http://localhost:8000/docs
+//http://localhost:8000/swagger.json
+//http://localhost:8000/v1/system/process
+//http://localhost:8000/v1/system/usage
+//http://localhost:8000/v1/system/error
+//http://localhost:8000/v1/system/time
+//http://localhost:8000/v1/system/info

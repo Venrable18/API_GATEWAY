@@ -1,5 +1,32 @@
-import { Express, Request, Response } from "express";
 import swaggerJsDocs from "swagger-jsdoc";
-import swaggerUi from "swagger-ui-express";
 import { version } from "../../package.json";
-import logger from "../lib/logger";
+
+const swaggerOptions: swaggerJsDocs.Options = {
+  definition: {
+    openapi: "3.0.0",
+    info: {
+      title: "API documentation for ALIEN__SHL",
+      version,
+    },
+    securitySchemas: {
+      bearerAuth: {
+        type: "http, https",
+        scheme: "bearer",
+        bearerFormat: "JWT",
+      },
+    },
+    security: [
+      {
+        bearerAuth: [],
+      },
+    ],
+    // basePath: "/api",
+  },
+  apis: ["./src/homepage.ts"], //path to your route files.
+};
+
+// Initialize your swagger docs;
+
+const swaggerSpec = swaggerJsDocs(swaggerOptions);
+
+export default swaggerSpec;

@@ -34,7 +34,7 @@ function registerControllerRoutes(routes: RouteDefinition[]): Router {
   return controllerRouter;
 }
 
-export function sysRoute() {
+export function sysCheckingRoute() {
   try {
     const router = Router();
 
