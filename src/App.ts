@@ -100,6 +100,8 @@ export default class App {
    */
 
   private setupSwaggerDocs(): void {
+    
+    // swagger page
     this.express.use("/docs", swaggerUi.serve, swaggerUi.setup(swaggerSpec));
 
     // Generating raw swagger Json on /swagger;
