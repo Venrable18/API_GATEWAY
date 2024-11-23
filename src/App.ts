@@ -3,10 +3,9 @@ import express, { NextFunction } from "express";
 import http from "http";
 //import * as helmet from 'helmet';
 // eslint-disable-next-line @typescript-eslint/no-require-imports
+const helmet = require("helmet");
 import swaggerSpec from "./utils/swagger";
 import swaggerUi from "swagger-ui-express";
-const helmet = require("helmet");
-import logger from "./lib/logger";
 import dotenv from "dotenv";
 import homePage from "./homepage";
 import { sysCheckingRoute } from "./routes";
