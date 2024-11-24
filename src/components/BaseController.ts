@@ -13,7 +13,14 @@ export default abstract class BaseController {
   // Global method to send API responses;
 
   public send(res: Response, StatusCode: number = StatusCodes.OK): void {
-    const encryptedData = getEncryptedText(res.locals.data);
-    res.status(StatusCode).send(encryptedData);
+    try {
+      const encryptedData = getEncryptedText(res.locals.data);
+      res.status(StatusCode).send({ data: encryptedData });
+    } catch (error) {
+      // for cases of internal server error
+      res
+        .status(StatusCodes.INTERNAL_SERVER_ERROR)
+        .send({ message: " Error encrypting data", error});
+    }
   }
-}
+};
