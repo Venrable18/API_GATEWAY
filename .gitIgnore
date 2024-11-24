@@ -6,7 +6,7 @@ temp/
 dist/
 /log/
 partCode.md
-
+test.ts
 # Leave out the env files.
 
 .env.prod
