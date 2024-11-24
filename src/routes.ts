@@ -57,22 +57,3 @@ export function sysCheckingRoute() {
   }
 }
 
-// export function bizRoutes() {
-//   try {
-//     const router = Router();
-
-//     // Here is where my business route is instantiated
-//     const bCtrl: myServicesController[] = [new myServicesController()];
-
-//     bCtrl.forEach((Ctrl) => {
-//       router.use(
-//         `/${Ctrl.basePath}`,
-//         registerControllerRoutes(Ctrl.bisRoute()),
-//       );
-//     });
-//     return router;
-//   } catch (error) {
-//     logger.error("Unable to register the route", error);
-//     throw error;
-//   }
-// }
