@@ -1,6 +1,9 @@
 import swaggerJsDocs from "swagger-jsdoc";
 import { version } from "../../package.json";
 
+
+
+
 const swaggerOptions: swaggerJsDocs.Options = {
   definition: {
     openapi: "3.0.0",
@@ -22,7 +25,10 @@ const swaggerOptions: swaggerJsDocs.Options = {
     ],
     // basePath: "/api",
   },
-  apis: ["./src/homepage.ts"], //path to your route files.
+  apis: [
+    "./src/homepage.ts",
+    "./src/components/system-status/SystemStatusController.ts",
+  ], //path to your route files.
 };
 
 // Initialize your swagger docs;

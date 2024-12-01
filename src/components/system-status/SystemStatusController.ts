@@ -13,17 +13,18 @@ import {
 } from "./SystemStatusTypes";
 import { RouteDefinition } from "../../types/RoutesDefinition";
 
-/**
- * Status controller
- */
+// System status controller
 export default class SystemStatusController extends BaseController {
-  // base path
-  public basePath = "system";
 
-  /**
-   * Define routes
-   */
-  public routes(): RouteDefinition[] {
+  //Base path of system status controller
+public basePath = "system";
+
+/**
+ * Routes system status controller
+ * @returns routes 
+ */
+
+public routes(): RouteDefinition[] {
     return [
       {
         path: "/info",
@@ -53,8 +54,22 @@ export default class SystemStatusController extends BaseController {
     ];
   }
 
+ 
   /**
-   * Get system information
+   * Gets system info
+   * @param req
+   * @param res
+   * @param next
+   *
+   *
+   * @openapi
+   * /v1/system/info:
+   *   get:
+   *     tag:
+   *        description: System Status metrics
+   *        responses:
+   *           200:
+   *              description: System Status is running
    */
   public getSystemInfo(req: Request, res: Response, next: NextFunction): void {
     try {
@@ -87,7 +102,27 @@ export default class SystemStatusController extends BaseController {
     }
   }
 
+/**
+ * Gets error
+ * @param req 
+ * @param res 
+ * @param next 
+ */
+public getError(req: Request, res: Response, next: NextFunction): void {
+    try {
+      throw new ApiError("system error", StatusCodes.BAD_REQUEST);
+    } catch (error) {
+      // from here error handler will get call
+      next(error);
+    }
+  }
+
   /**
+   *
+   * @param req
+   * @param res
+   * @param next
+   *
    * Get server time
    */
   public getServerTime(req: Request, res: Response, next: NextFunction): void {
@@ -107,10 +142,13 @@ export default class SystemStatusController extends BaseController {
     }
   }
 
-  /**
-   * Get resource usage
-   */
-  public getResourceUsage(
+/**
+ * Gets resource usage
+ * @param req 
+ * @param res 
+ * @param next 
+ */
+public getResourceUsage(
     req: Request,
     res: Response,
     next: NextFunction,
@@ -138,10 +176,13 @@ export default class SystemStatusController extends BaseController {
     }
   }
 
-  /**
-   * Get process information
-   */
-  public getProcessInfo(req: Request, res: Response, next: NextFunction): void {
+/**
+ * Gets process info
+ * @param req 
+ * @param res 
+ * @param next 
+ */
+public getProcessInfo(req: Request, res: Response, next: NextFunction): void {
     try {
       const response: IProcessInfoResponse = {
         procCpu: process.cpuUsage(),
@@ -156,17 +197,6 @@ export default class SystemStatusController extends BaseController {
       super.send(res);
     } catch (err) {
       next(err);
-    }
-  }
-
-  /**
-   * Example error route
-   */
-  public getError(req: Request, res: Response, next: NextFunction): void {
-    try {
-      throw new ApiError("An error occurred", StatusCodes.BAD_REQUEST);
-    } catch (error) {
-      next(error);
     }
   }
 }

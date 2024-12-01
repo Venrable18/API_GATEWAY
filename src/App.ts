@@ -4,13 +4,16 @@ import http from "http";
 //import * as helmet from 'helmet';
 // eslint-disable-next-line @typescript-eslint/no-require-imports
 const helmet = require("helmet");
+import logger from "./lib/logger";
+import dotenv from "dotenv";
 import swaggerSpec from "./utils/swagger";
 import swaggerUi from "swagger-ui-express";
-import dotenv from "dotenv";
 import homePage from "./homepage";
 import { sysCheckingRoute } from "./routes";
-dotenv.config();
+import { userCheckingRoute } from "./routes";
 import { addErrorHandler } from "./middleware/error-handler";
+
+dotenv.configDotenv();
 
 export default class App {
   public express: express.Application;
@@ -22,11 +25,14 @@ export default class App {
       this.express as unknown as http.RequestListener,
     );
   }
-
-  public async init(): Promise<void> {
+/**
+ * Inits app
+ * @returns init 
+ */
+public async init(): Promise<void> {
     const { NODE_ENV } = process.env;
 
-    // add all the global middleware here
+    
     this.middleware();
 
     // register all your routes
@@ -41,24 +47,25 @@ export default class App {
     }
   }
 
-  /**
-   * here register all your routes
-   */
 
-  private routes(): void {
+/**
+ * Routes app
+ */
+private routes(): void {
     this.express.get("/", this.basePathRoute);
     this.express.get("/web", this.parseRequestHeader, this.basePathRoute);
     this.express.get("/homepage", homePage);
     this.express.use("/", sysCheckingRoute());
+    this.express.use("/", userCheckingRoute());
   }
-
-  private middleware(): void {
+  
+// Middlewares app
+private middleware(): void {
     this.express.use(helmet({ contentSecurityPolicy: true }));
     this.express.use(express.json({ limit: "100mb" }));
     this.express.use(express.urlencoded({ limit: "100mb", extended: true }));
 
     // add multiple cors options as per your use
-
     const corsOptions = {
       origin: ["http://localhost:3000", "http://localhost:8000"],
     };
@@ -108,14 +115,16 @@ export default class App {
       res.setHeader("Content-Type", "application/json");
       res.send(swaggerSpec); // send the generated swagger JSON;
     });
+    logger.info(`Swagger is running on http://localhost:8080/docs`)
   }
 }
 
-//http://localhost:8000/homepage
-//http://localhost:8000/docs
+//http://localhost:8080/homepage
+//http://localhost:8080/docs
 //http://localhost:8000/swagger.json
 //http://localhost:8000/v1/system/process
-//http://localhost:8000/v1/system/usage
-//http://localhost:8000/v1/system/error
-//http://localhost:8000/v1/system/time
+//http://localhost:8080/v1/system/usage
+//http://localhost:8080/v1/system/error
+//http://localhost:8080/v1/system/time
 //http://localhost:8000/v1/system/info
+//http://localhost:8080/v1/user/getuser

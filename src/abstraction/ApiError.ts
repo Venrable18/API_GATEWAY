@@ -20,6 +20,7 @@ class ApiError extends Error implements IError {
     super();
     this.status = statusCode;
     this.name = name;
+    // Error.captureStackTrace(this);
 
     // Initialize fields to ensure it matches IError interface
     this.fields = {

@@ -2,6 +2,7 @@ import logger from "./lib/logger";
 import { Router } from "express";
 import { RouteDefinition } from "./types/RoutesDefinition";
 import SystemStatusController from "./components/system-status/SystemStatusController";
+import UserController from "./business/Users/userController";
 
 function registerControllerRoutes(routes: RouteDefinition[]): Router {
   const controllerRouter = Router();
@@ -34,17 +35,25 @@ function registerControllerRoutes(routes: RouteDefinition[]): Router {
   return controllerRouter;
 }
 
+
+/**
+ * Sys checking route
+ * @returns  
+ */
 export function sysCheckingRoute() {
   try {
     const router = Router();
 
-    // instantiated systemStatus route
+    // Define an array of controller objects
 
     const SystemControllers: SystemStatusController[] = [
       new SystemStatusController(),
     ];
 
+    // Dynamically register routes for each controller
+
     SystemControllers.forEach((SystemController) =>
+      // make sure each controller has basePath attribute and routes() method
       router.use(
         `/v1/${SystemController.basePath}`,
         registerControllerRoutes(SystemController.routes()),
@@ -52,7 +61,36 @@ export function sysCheckingRoute() {
     );
     return router;
   } catch (error) {
-    logger.error("Unable to get SystemStatus through this route", error);
+    logger.error("Unable to get SystemStatus route", error);
+    throw error;
+  }
+}
+
+
+/**
+ * Users checking route
+ * @returns  
+ */
+export function userCheckingRoute() {
+  try {
+    const router = Router();
+
+    // Define an array of controller objects
+
+    const usrControllers: UserController[] = [new UserController()];
+
+    // Dynamically register routes for each controller
+
+    usrControllers.forEach((usrController) =>
+      // make sure each controller has basePath attribute and routes() method
+      router.use(
+        `/v1/${usrController.basePath}`,
+        registerControllerRoutes(usrController.routes()),
+      ),
+    );
+    return router;
+  } catch (error) {
+    logger.error("Unable to get user route", error);
     throw error;
   }
 }

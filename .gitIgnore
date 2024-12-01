@@ -8,6 +8,7 @@ dist/
 partCode.md
 test.ts
 readout.md
+check.ts
 # Leave out the env files.
 
 .env.prod

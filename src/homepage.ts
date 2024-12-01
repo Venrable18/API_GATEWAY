@@ -1,17 +1,23 @@
-import { Request, Response } from "express";
+import { Request, Response, NextFunction } from "express";
+import logger from "./lib/logger";
+import { StatusCodes } from "http-status-codes";
+import ApiError from "./abstraction/ApiError";
+
 
 /**
  * @openapi
- * /homepage:
- *  get:
- *    description: This is the homepage
- *    responses:
- *      200:
- *       description: Homepage fully displayed
+ * /Homepage:
+ *    get:
+ *      tag:
+ *        - Homepage
  */
-
-const homePage = (req: Request, res: Response) => {
-  res.json({ message: "Welcome to the Homepage!" });
+const homePage = (req: Request, res: Response, next: NextFunction) => {
+  try {
+    res.send("This is the home page");
+  } catch (error) {
+    logger.error(error); // Log the error
+    next(new ApiError("ApiError", StatusCodes.BAD_GATEWAY)); // Pass the error to the next middleware
+  }
 };
 
 export default homePage;

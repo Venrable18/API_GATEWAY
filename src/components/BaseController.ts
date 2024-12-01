@@ -11,16 +11,16 @@ export default abstract class BaseController {
   public abstract routes(): RouteDefinition[];
 
   // Global method to send API responses;
-
+  // Encrypt the response data
   public send(res: Response, StatusCode: number = StatusCodes.OK): void {
     try {
       const encryptedData = getEncryptedText(res.locals.data);
       res.status(StatusCode).send({ data: encryptedData });
     } catch (error) {
-      // for cases of internal server error
+      // for case of error send an internal server error
       res
         .status(StatusCodes.INTERNAL_SERVER_ERROR)
-        .send({ message: " Error encrypting data", error});
+        .send({ message: " Error encrypting data", error });
     }
   }
-};
+}

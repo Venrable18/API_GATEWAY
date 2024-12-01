@@ -17,28 +17,33 @@ function serverError(err: NodeJS.ErrnoException) {
 
 const server = http.createServer(app.express);
 
+function serverListening(): void {
+  const addressInfo: AddressInfo = server.address() as AddressInfo;
+  logger.info(
+    `Server listening on http://${addressInfo.address}:${addressInfo.port}`,
+  );
+}
+
+
 (async () => {
   try {
     await app.init();
-    const port = 8000;
-    app.express.set("port", port);
+
+    const PORT = 8080;
+    app.express.set("port", PORT);
 
     server.on("error", serverError);
-    server.listen(port, () => {
-      const addressInfo: AddressInfo = server.address() as AddressInfo;
-      logger.info(
-        `Server listening on http://${addressInfo.address}:${addressInfo.port}`,
-      );
-    });
+    server.on("listening", serverListening);
+    server.listen(PORT);
   } catch (err: unknown) {
     if (err instanceof Error) {
       logger.error(err.name);
       logger.error(err.message);
       logger.error(err.stack);
-    } else {
-      logger.error("An unknown error occurred:", err);
-    }
+    } 
   }
+
+  
 
   process.on("unhandledRejection", (reason: Error) => {
     logger.error("Unhandled Promise Rejection: reason:", reason.message);
